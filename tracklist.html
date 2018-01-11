@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Digi Jukebox</title>
+	<meta charset="utf-8">
+	<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+</head>
+<body>
+	<img src="https://i.pinimg.com/originals/cb/0d/92/cb0d92f5e94b4a3d4a037998629d4bd1.jpg">
+		<br>
+	<div id="container" style="color:red; font-family: 'Lobster', cursive; font-size: 20px"></div>
+	<img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Octicons-playback-play.svg" id="playButton" width="235px" height="235px">
+	<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Ic_pause_48px.svg" id="pauseButton">
+		<br>
+	<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Double_angle_right_font_awesome.svg/512px-Double_angle_right_font_awesome.svg.png" id="nextButton" width="180px" height="180px">
+	<img src="https://soundleisure.com/images/made/uploads/assets/1015_FrontShotLarge_380_549_s_c1.png" height="180px">
+
+	<script type="text/javascript">
+		// get song object when image play is clicked and play
+		document.getElementById('playButton').addEventListener("click", function() {
+			Jukebox.play()
+		})
+
+		// get elements in audioList when image pause is clicked and pause
+		document.getElementById('pauseButton').addEventListener("click", function() {
+			Jukebox.pause()
+		})
+
+		document.getElementById('nextButton').addEventListener("click", function() {
+			Jukebox.next()
+		})
+
+		class Song {
+			constructor(file, name){
+				this.audio = new Audio(file);
+				this.name = name;
+			}
+
+			play() {
+				this.audio.play();
+			}
+
+			pause() {
+				this.audio.pause();
+			}
+
+			stop() {
+				this.pause();
+				this.audio.currentTime = 0;
+			}
+		}
+
+
+		const Jukebox = {
+			songs: [],
+
+			add(song) { // adds new song in array
+				this.songs.push(song);
+			},
+
+			init() {
+				this.currentSongIndex = 0;
+			},
+
+			play() { // play song
+				this.songs[this.currentSongIndex].play();
+				let element = document.createElement("div");
+				element.innerText = (`${this.songs[this.currentSongIndex].name}`);
+				element.className = "song";
+				document.getElementById("container").appendChild(element);
+			},
+
+			pause() { // pause song
+				this.songs[this.currentSongIndex].pause();
+			},
+
+			next() { // stop current song + go to next song
+				this.songs[this.currentSongIndex].stop();
+				this.currentSongIndex = (this.currentSongIndex + 1) % this.songs.length;
+				this.songs[this.currentSongIndex].play();
+			},
+	
+		}
+
+		Jukebox.init();
+		Jukebox.add(new Song("03MyNumber.m4a", "My Number"));
+		Jukebox.add(new Song("06TheLessIKnowtheBetter.m4a", "The Less I Know The Better"));
+		Jukebox.add(new Song("02Sun.m4a", "Sun"));
+		Jukebox.add(new Song("01Odessa.m4a", "Odessa"));
+		Jukebox.add(new Song("04GiveItAll.m4a", "Give It All"));
+		Jukebox.add(new Song("05HeavenfortheSinner(feat.ErykahBadu).m4a", "Heaven For The Sinner"));
+
+	// Make it interactive: show the song that is playing to the viewer
+
+
+	</script>
+</body>
+</html>
